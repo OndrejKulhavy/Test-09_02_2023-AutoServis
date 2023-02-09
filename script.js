@@ -1,5 +1,6 @@
 class Auto {
     constructor(rokVyroby, znacka, model, najetoKm) {
+        this.id = Math.floor(Math.random() * 1000000000);
         this.rokVyroby = rokVyroby;
         this.znacka = znacka;
         this.model = model;
@@ -18,8 +19,7 @@ class Auto {
     <li class="list-group-item">Najetých KM: ${this.najetoKm}</li>
   </ul>
   <div class="card-body">
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
+    <button kod="${this.id}" type="button" onClick="smazAuto(this);" class="btn btn-danger">Odebrat</button>
   </div>
 </div>`
     }
@@ -71,7 +71,25 @@ function pridejAuto() {
     let znacka = document.getElementById("znacka").value;
     let model = document.getElementById("model").value;
     let najetoKm = document.getElementById("najeto-km").value;
+
+    document.getElementById("rok-vyroby").value = "";
+    document.getElementById("znacka").value = "";
+    document.getElementById("model").value = "";
+    document.getElementById("najeto-km").value = "";
+
     let auto = new Auto(rokVyroby, znacka, model, najetoKm);
     autoServis.pridejAuto(auto);
     autoServis.updateAutaOnWeb();
+}
+
+function smazAuto(input) {
+    let id = input.getAttribute("kod");
+
+    for (let auto of autoServis.getAuta()) {
+        if (auto.id == id) {
+            autoServis.smazAuto(auto);
+            autoServis.updateAutaOnWeb();
+            break;
+        }
+    }
 }
